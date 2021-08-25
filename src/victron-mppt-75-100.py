@@ -8,8 +8,8 @@ from influxdb import InfluxDBClient
 import argparse, os
 from vedirect import Vedirect
 
-influxclient = InfluxDBClient('localhost', 8086, 'grafana', 'grafana')
-influxclient.switch_database('batterymon')
+#needed in global context for callback process_solar function to get access to it.
+influxclient =  None
 
 def process_solar(packet):
     res = dict()
@@ -58,5 +58,14 @@ def process_solar(packet):
         print("Failed to read values")
 
 
-ve = Vedirect('/dev/ttyUSB1', 20)
-ve.read_data_callback(process_solar)
+
+if __name__ == '__main__':
+    print( 'using port ' ,sys.argv[1])
+    #port='/dev/ttyUSB1'
+    port = sys.argv[1]
+
+    influxclient = InfluxDBClient('localhost', 8086, 'grafana', 'grafana')
+    influxclient.switch_database('batterymon')
+
+    ve = Vedirect(port, 20)
+    ve.read_data_callback(process_solar)
