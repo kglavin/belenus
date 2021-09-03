@@ -39,5 +39,5 @@ In the first Dashboard we see operation for the last three hours. The board pres
 * operating parameters (voltage, current, power) for the solar array and solar charge controller. 
 * daily and cumulative yield figures 
 
-![alt text](documentation/diagrams/dashboard-7hour.png "Graphana Dashboard")
+![alt text](documentation/diagrams/dashboard-7day.png "7 day Graphana Dashboard")
 The 7 day timescale on the dashboard shows the operating cycle of the system where the system has been charging during daytime/sunlight hours and then using that energy (currently by manual operation of AC power switch) when the battery has reached 100% state of charge or by configured control of the AC power switch from 4pm to 9pm ( future high cost time of date cost period from utility provider)
