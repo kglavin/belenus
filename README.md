@@ -29,3 +29,15 @@ The monitoring capabilities include:
 ## Control
 ![alt text](documentation/diagrams/SystemContext_3.png "System Control Context")
 Currently a single control point is provided in the form of an intelligent AC switch which allows for the engagement or disengagement of the Electrical grid power. With this switch it is possible to switch to using the stored battery power to feed the AC loads instead of the Grid power, this allowing for time shifting of power harvested either through solar capture or stored at a time of day with the cheaper time of day.
+
+## Dashboard
+![alt text](documentation/diagrams/dashboard-3hour.png "Graphana Dashboard")
+Sensor data from the monitoring processes is stored in an influxdb timeseries databased and is then presented using the graphana dashboarding system. 
+In the first Dashboard we see operation for the last three hours. The board presents the key instaneous and historic operating metrics. These include 
+* The last measured (instaneous) values for battery voltage and current as measured. Power calculations indicating the power either being provided from the battery or being injected (as charging) into the battery. 
+* battery state of charge.
+* operating parameters (voltage, current, power) for the solar array and solar charge controller. 
+* daily and cumulative yield figures 
+
+![alt text](documentation/diagrams/dashboard-7hour.png "Graphana Dashboard")
+The 7 day timescale on the dashboard shows the operating cycle of the system where the system has been charging during daytime/sunlight hours and then using that energy (currently by manual operation of AC power switch) when the battery has reached 100% state of charge or by configured control of the AC power switch from 4pm to 9pm ( future high cost time of date cost period from utility provider)
