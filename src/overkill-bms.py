@@ -9,6 +9,7 @@ from JDB_proto import JDB, JDBResponse
 
 def poll_loop(client,influx_client):
     while True:
+        sleep(4)
         try:
             r = JDB()
             r.read_basic_info()
@@ -39,7 +40,6 @@ def poll_loop(client,influx_client):
                 print('failed to sent request')
                 sleep(20)
                 
-# Dummy client for unit testing without BMS
 class client():
     def __init__(self):
         pass
@@ -55,8 +55,8 @@ class client():
 
 if __name__ == '__main__':
     #print( 'using port ' ,sys.argv[1])
-    port='/dev/ttyUSB2'
-    #port = sys.argv[1]
+    #port='/dev/ttyUSB1'
+    port = sys.argv[1]
 
     influxclient = InfluxDBClient('localhost', 8086, 'grafana', 'grafana')
     influxclient.switch_database('batterymon')

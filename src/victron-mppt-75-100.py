@@ -5,7 +5,7 @@ from os import path
 from time import gmtime, strftime
 from influxdb import InfluxDBClient
 
-import argparse, os
+import argparse, os, sys
 from vedirect import Vedirect
 
 #needed in global context for callback process_solar function to get access to it.
@@ -53,8 +53,8 @@ def process_solar(packet):
         s = s + f',{yieldtotal},{yieldtoday},{maxpowertoday},{yieldyesterday},{maxpoweryesterday}'
         print(s)
         s = s +'\n'
-    #except:
-    else:
+    except:
+    #else:
         print("Failed to read values")
 
 
@@ -67,5 +67,9 @@ if __name__ == '__main__':
     influxclient = InfluxDBClient('localhost', 8086, 'grafana', 'grafana')
     influxclient.switch_database('batterymon')
 
-    ve = Vedirect(port, 20)
-    ve.read_data_callback(process_solar)
+    while True:
+       try:
+           ve = Vedirect(port, 30)
+           ve.read_data_callback(process_solar)
+       except:
+           print(" Failed to vedirect")
