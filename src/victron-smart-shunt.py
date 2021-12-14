@@ -12,21 +12,21 @@ from vedirect import Vedirect
 influxclient =  None
 
 def process_solar_all(packet):
-    print(packet)
-    print(len(packet))
+    print(len(packet),':',packet)
     if len(packet)>28:
         process_solar(packet)
 
 def process_solar(packet):
     res = dict()
     data = dict()
-    data['measurement'] = 'smartshunt1.0'
+    data['measurement'] = 'smartshunt1.1'
     data['tags'] = {'id': 'smartshunt'}
     data['time'] = time.strftime('%Y-%m-%dT%H:%M:%S', gmtime())
     try:
     #if True:
-        print(packet)
+        #print(packet)
         volts = int(packet['V'] ) / 1000
+        vs = int(packet['VS'] ) / 1000
         current = int(packet['I'] ) / 1000
         power = int(packet['P'])
         soc = int(packet['SOC'] ) / 10
@@ -45,6 +45,7 @@ def process_solar(packet):
         chargedenergy = int(packet['H18'])/100
 
         res['voltage'] = volts 
+        res['voltageStarter'] = vs 
         res['current'] = current 
         res['power'] =  power 
         res['soc'] =  soc 
@@ -89,8 +90,10 @@ if __name__ == '__main__':
     influxclient.switch_database('batterymon')
     storedPacket = None
     while True:
-       try:
+       #try:
+       if True:
            ve = Vedirect(port, 30)
            ve.read_data_callback(process_solar_all)
-       except:
+       #except:
+       else:
            print(" Failed to vedirect")
