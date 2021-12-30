@@ -10,12 +10,13 @@ from vedirect import Vedirect
 
 #needed in global context for callback process_solar function to get access to it.
 influxclient =  None
+solarid='solar'
 
 def process_solar(packet):
     res = dict()
     data = dict()
     data['measurement'] = 'solar1.3'
-    data['tags'] = {'id': 'solar'}
+    data['tags'] = {'id': solarid}
     data['time'] = time.strftime('%Y-%m-%dT%H:%M:%S', gmtime())
     try:
         volts = int(packet['V'] ) / 1000
@@ -62,7 +63,8 @@ def process_solar(packet):
 if __name__ == '__main__':
     print( 'using port ' ,sys.argv[1])
     #port='/dev/ttyUSB1'
-    port = sys.argv[1]
+    solarid = sys.argv[1]
+    port = sys.argv[2]
 
     influxclient = InfluxDBClient('localhost', 8086, 'grafana', 'grafana')
     influxclient.switch_database('batterymon')

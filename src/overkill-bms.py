@@ -6,6 +6,7 @@ from influxdb import InfluxDBClient
 import serial
 from JDB_proto import JDB, JDBResponse
 
+bmsid = 'bms-1'
 
 def poll_loop(client,influx_client):
     while True:
@@ -17,7 +18,7 @@ def poll_loop(client,influx_client):
             client.write(d) 
             data = dict()    
             data['measurement'] = "bms-0.1"    
-            data['tags'] = {'id': 'bms'}    
+            data['tags'] = {'id': bmsid}    
             data['time'] = time.strftime('%Y-%m-%dT%H:%M:%S', gmtime())
             try:
                 sleep(1)
@@ -31,7 +32,7 @@ def poll_loop(client,influx_client):
                         pass
                     except:
                         print('failed to write_points')
-                s = time.strftime("%m/%d/%Y %H:%M:%S %z", time.gmtime()) +' : '+ str(r.resp['voltage']) + ', '+str(r.resp['current'])
+                s = time.strftime("%m/%d/%Y %H:%M:%S %z", time.gmtime()) +' : '+ str(r.resp['voltage']) + ', '+str(r.resp['current']) +', '+str(r.resp['ntc_0']) +', '+str(r.resp['remaining_soc'])+', '+str(r.resp['charging'])+', '+str(r.resp['rate_capacity'])
                 print(s)
             except:
                 print("Failed to read values")
@@ -57,6 +58,7 @@ if __name__ == '__main__':
     #print( 'using port ' ,sys.argv[1])
     #port='/dev/ttyUSB1'
     port = sys.argv[1]
+    bmsid = sys.argv[2]
 
     influxclient = InfluxDBClient('localhost', 8086, 'grafana', 'grafana')
     influxclient.switch_database('batterymon')
